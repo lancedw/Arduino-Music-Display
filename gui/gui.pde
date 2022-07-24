@@ -1,6 +1,7 @@
 import controlP5.*;
 import processing.serial.*;
 import java.util.Random;
+import java.util.*;
 
 Serial port;
 ControlP5 cp;
@@ -8,33 +9,137 @@ PFont font;
 String text = "Static;Blink;Breath;Color Wipe;Color Wipe Inverse;Color Wipe Reverse;Color Wipe Reverse Inverse;Color Wipe Random;Random Color;Single Dynamic;Multi Dynamic;Rainbow;Rainbow Cycle;Scan;Dual Scan;Fade;Theater Chase;Theater Chase Rainbow;Running Lights;Twinkle;Twinkle Random;Twinkle Fade;Twinkle Fade Random;Sparkle;Flash Sparkle;Hyper Sparkle;Strobe;Strobe Rainbow;Multi Strobe;Blink Rainbow;Chase White;Chase Color;Chase Random;Chase Rainbow;Chase Flash;Chase Flash Random;Chase Rainbow White;Chase Blackout;Chase Blackout Rainbow;Color Sweep Random;Running Color;Running Red Blue;Running Random;Scanner;Comet;Fireworks;Fireworks Random;Christmas;Fire Flicker;Fire Flicker (soft);Fire Flicker (intense);Circus Combustus;Halloween;Bicolor Chase;Tricolor Chase;TwinkleFOX";
 String[] fx = text.split(";");
 
+Map<String, Integer> chill = new HashMap<>();
+Map<String, Integer> flash = new HashMap<>();
+
 void setup() {
   size(1200, 900);    //(width, height)
-  port = new Serial(this, "COM5", 9600); 
+  port = new Serial(this, "COM3", 9600); 
   cp = new ControlP5(this);
   font = createFont("calibri light", 18);
   
-  int nr = 0;
   int w = 170;     //width of button
   int h = 60;     //height of button
-
-  //for(int r = 0; r<11; r++){
-  //  for(int c = 0; c<5; c++){
-  //    cp.addButton("button"+nr)    //name of button
-  //      .setLabel(fx[nr])
-  //      .setPosition(50+c*(w+15), 20+r*(h+15))    //(x,y) of upper left corner
-  //      .setSize(w, h)       //(width, height)
-  //      .setFont(font)
-  //      ;
-  //      nr++;
-  //  }
-  //}
+  
+  chill.put("Static", 0);
+  flash.put("Blink", 1);
+  chill.put("Breath", 2);
+  chill.put("Color Wipe", 3);
+  //dict.put("Color Wipe Inverse", 4);
+  chill.put("Color Wipe Reverse", 5);
+  //dict.put("Color Wipe Reverse Inverse", 6);
+  chill.put("Color Wipe Rand", 7);
+  flash.put("Random Color", 8);
+  //dict.put("Single Dynamic", 9);
+  //dict.put("Multi Dynamic", 10);
+  chill.put("Rainbow", 11);
+  chill.put("Rainbow Cycle", 12);
+  flash.put("Scan", 13);
+  flash.put("Dual Scan", 14);
+  chill.put("Fade", 15);
+  flash.put("Theater Chase", 16);
+  flash.put("T. Chase Rainbow", 17);
+  chill.put("Running Lights", 18);
+  //dict.put("Twinkle", 19);
+  //dict.put("Twinkle Random", 20);
+  chill.put("Twinkle", 21);
+  chill.put("Twinkle Random", 22);
+  flash.put("Sparkle", 23);
+  //dict.put("Flash Sparkle", 24);
+  //dict.put("Hyper Sparkle", 25);
+  flash.put("Strobe", 26);
+  flash.put("Strobe Rainbow", 27);
+  flash.put("Strobe Multi", 28);
+  //dict.put("Blink Rainbow", 29);
+  //dict.put("Chase White", 30);
+  chill.put("Chase Color", 31);
+  chill.put("Chase Random", 32);
+  //dict.put("Chase Rainbow", 33);
+  //dict.put("Chase Flash", 34);
+  //dict.put("Chase Flash Random", 35);
+  //dict.put("Chase Rainbow White", 36);
+  //dict.put("Chase Blackout", 37);
+  //dict.put("Chase Blackout Rainbow", 38);
+  chill.put("Color Sweep Rand", 39);
+  flash.put("Running Color", 40);
+  //dict.put("Running Red Blue", 41);
+  //dict.put("Running Random", 42);
+  flash.put("Scanner", 43);
+  flash.put("Comet", 44);
+  flash.put("Fireworks", 45);
+  flash.put("Fireworks Rand", 46);
+  //dict.put("Christmas", 47);
+  //dict.put("Fire Flicker", 48);
+  //dict.put("Fire Flicker (soft)", 49);
+  flash.put("Fire Flicker", 50);
+  //dict.put("Circus Combustus", 51);
+  //dict.put("Halloween", 52);
+  //dict.put("Bicolor Chase", 53);
+  flash.put("Tricolor Chase", 54);
+  flash.put("TwinkleFOX", 55);
+  flash.put("Rain", 56);
+  
+  int c = 0;
+  int r = 1;
+  List<String> l = new ArrayList<String>(chill.keySet());
+  Collections.sort(l);
+  for(String key : l) {
+    Integer value = chill.get(key);
+    cp.addButton("button"+value)    //name of button
+        .setLabel(key)
+        .setPosition(50+c*(w+15), 20+r*(h+15))    //(x,y) of upper left corner
+        .setSize(w, h)       //(width, height)
+        .setFont(font)
+        ;
+    c++;
+    if(c == 5){
+      c = 0;
+      r ++;
+    }
+  }
+  
+  c = 0;
+  r += 2;
+  l = new ArrayList<String>(flash.keySet());
+  Collections.sort(l);
+  for(String key : l) {
+    Integer value = flash.get(key);
+    cp.addButton("button"+value)    //name of button
+        .setLabel(key)
+        .setPosition(50+c*(w+15), 20+r*(h+15))    //(x,y) of upper left corner
+        .setSize(w, h)       //(width, height)
+        .setFont(font)
+        ;
+    c++;
+    if(c == 5){
+      c = 0;
+      r ++;
+    }
+  }
+  
+  c = 0;
+  r += 2;
+  cp.addButton("vu")    //name of button
+        .setLabel("vu meter")
+        .setPosition(50+c*(w+15), 20+r*(h+15))    //(x,y) of upper left corner
+        .setSize(w, h)       //(width, height)
+        .setFont(font)
+        ;
+  
+  cp.addColorWheel("c", 1200-260, 900-260, 260).setRGB(color(128,0,255));
 }
 
 void draw(){
   background(150, 0, 150);   //(R, G, B)
+  
+  textSize(30);
+  text("LED Control Panel", 100, 55);
+  
+  println(hex(cp.get(ColorWheel.class,"c").getRGB()));
 }
 
+void vu(){port.write(57);}
+void button56(){port.write(56);}
 void button0(){port.write(0);}
 void button1(){port.write(1);}
 void button2(){port.write(2);}
