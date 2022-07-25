@@ -21,7 +21,7 @@ void setup() {
   int w = 170;     //width of button
   int h = 60;     //height of button
   
-  chill.put("Static", 0);
+  chill.put("_Static", 0);
   flash.put("Blink", 1);
   chill.put("Breath", 2);
   chill.put("Color Wipe", 3);
@@ -78,6 +78,7 @@ void setup() {
   flash.put("Tricolor Chase", 54);
   flash.put("TwinkleFOX", 55);
   flash.put("Rain", 56);
+  chill.put("_Off", 58);
   
   int c = 0;
   int r = 1;
@@ -99,7 +100,7 @@ void setup() {
   }
   
   c = 0;
-  r += 2;
+  r += 1;
   l = new ArrayList<String>(flash.keySet());
   Collections.sort(l);
   for(String key : l) {
@@ -139,7 +140,6 @@ void draw(){
 }
 
 void vu(){port.write(57);}
-void button56(){port.write(56);}
 void button0(){port.write(0);}
 void button1(){port.write(1);}
 void button2(){port.write(2);}
@@ -196,3 +196,5 @@ void button52(){port.write(52);}
 void button53(){port.write(53);}
 void button54(){port.write(54);}
 void button55(){port.write(55);}
+void button56(){port.write(56);}
+void button58(){port.write(58);}
